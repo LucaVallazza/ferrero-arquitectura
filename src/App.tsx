@@ -24,7 +24,7 @@ import casaMiradorPhoto from './assets/casa_mirador.jpg'
 import urbanLoftPhoto from './assets/urban_loft.jpg'
 import culturalCenterPhoto from './assets/centro_cultural.jpg'
 import sustainableHomePhoto from './assets/residencia_sustentable.jpg'
-import heroBackground from './assets/planos.jpg'
+import heroBackground from './assets/planos-compressed.jpg'
 
 const App = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +35,7 @@ const App = () => {
   });
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState("default"); // Add this line to track toast type
 
   // Services data
   const services = [
@@ -114,6 +115,16 @@ const App = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     // Add form submission logic here
+    
+    // Show success toast
+    showToast("¡Enviado! Su mensaje será respondido en las próximas 48 horas.", "success");
+    
+    // Reset form
+    setFormData({
+      name: "",
+      email: "",
+      message: "",
+    });
   };
 
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -145,8 +156,9 @@ const App = () => {
     }
   };
 
-  const showToast = (message: string) => {
+  const showToast = (message: string, type: string = "default") => {
     setToastMessage(message);
+    setToastType(type);
     setToastVisible(true);
     
     // Hide toast after 3 seconds
@@ -659,7 +671,9 @@ const App = () => {
       
       {/* Toast notification */}
       <div 
-        className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-md shadow-lg transition-opacity duration-300 z-50 ${
+        className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 ${
+          toastType === "success" ? "bg-green-600" : "bg-gray-800"
+        } text-white px-6 py-3 rounded-md shadow-lg transition-opacity duration-300 z-50 ${
           toastVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}
       >
